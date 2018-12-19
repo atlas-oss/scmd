@@ -4,10 +4,10 @@ WARN= -Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -Wformat-
 SEC= -march=native -fstack-protector-all --param ssp-buffer-size=4 -fpie -ftrapv -D_FORTIFY_SOURCE=2
 
 CFLAGS= ${SEC} ${WARN} -std=c99 -pedantic -O2
-LDFLAGS= -Wl,-z,relro,-z,now -pie
+LDFLAGS= -Wl,-z,relro,-z,now -pie -ldl
 
-SRC = main.c
-OBJECT = main.c
+SRC = main.c mod.c def.c
+OBJECT = main.o mod.o def.o
 
 all: _scmd_
 	@echo CC -o scmd_serv
