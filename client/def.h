@@ -6,7 +6,8 @@ enum SERVER_EXIT {
 	UNKOWN_FAILURE = 0x01,
 	TIMEOUT = 0x02,
 	UNKOWN_CMD = 0x03,
-	MODULE_CRASH = 0x04
+	UNKOWN_MODULE = 0x04,
+	MODULE_CRASH = 0x05
 };
 
 typedef enum SERVER_EXIT server_exit_t;
