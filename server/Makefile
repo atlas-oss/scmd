@@ -3,11 +3,11 @@ CC=gcc
 WARN= -Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -Wformat-security -Wformat -Werror=format-security -Wstack-protector
 SEC= -march=native -fstack-protector-all --param ssp-buffer-size=4 -fpie -ftrapv -D_FORTIFY_SOURCE=2
 
-CFLAGS= ${SEC} ${WARN} -std=c99 -pedantic -O2
+CFLAGS= ${SEC} ${WARN} -std=c99 -pedantic -O2 -DVERBOSE
 LDFLAGS= -Wl,-z,relro,-z,now -pie -ldl
 
-SRC = main.c mod.c def.c
-OBJECT = main.o mod.o def.o
+SRC = main.c mod.c def.c network.c
+OBJECT = main.o mod.o def.o network.o
 
 all: _scmd_
 	@echo CC -o scmd_serv

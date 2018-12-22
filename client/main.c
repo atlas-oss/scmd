@@ -11,10 +11,10 @@ static char *cmd = "";
 static char *addr = "";
 static int port = 0;
 
-void die(int err, char *msg, int argc, ...)
+void die(int err, char *msg, ...)
 {
 	va_list va;
-	va_start(va, argc);
+	va_start(va, msg);
 	vfprintf(stderr, msg, va);
 	va_end(va);
 	exit(err);
@@ -42,15 +42,13 @@ int main(int argc, char **argv)
 
 	if (!sock)
 		die(EXIT_FAILURE,
-		    "Could not open connection for %s on port %d\n", 2, addr,
+		    "Could not open connection for %s on port %d\n", addr,
 		    port);
 
-	cmd_proto_t request = {
-		.exit = SUCCESS
-	};
+	cmd_proto_t request = {.exit = SUCCESS};
 
 	if (!send_cmd(sock, &request))
-		die(EXIT_FAILURE, "Could not send command\n", 0);
+		die(EXIT_FAILURE, "Could not send command\n");
 
 	return 0;
 }
