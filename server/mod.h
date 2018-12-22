@@ -2,9 +2,9 @@
 #define MOD_H
 
 typedef struct {
-	char *name; 
-	void (*init) (); // init the module, called "init"
-	void (*cmd) ();  // handles commands from the client, called "cmd"
+	char *name;
+	void (*init)(); // init the module, called "init"
+	void (*cmd)();  // handles commands from the client, called "cmd"
 } mod_t;
 
 int prepare_modloader();   // Returns non-zero on failure

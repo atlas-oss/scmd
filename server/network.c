@@ -15,7 +15,7 @@ int open_connection(const unsigned short port)
 		die(EXIT_FAILURE, "Could not open socket.");
 
 	memset(&serv_addr, '0', sizeof(serv_addr));
-	
+
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(port);
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
