@@ -15,13 +15,17 @@ int main() {
 
 	if(!open_dir("/.scmd/", 7))
 		die(ENOENT, "Could not create config dir.");
-
+	
 	prepare_modloader();
 
 	// Programmflow
-
 	open_connection(PORT);
 
+	mod_t mod = {.name = "test.so"};
+
+	mod_query(&mod);
+	
+	mod.init();
 	// Cleanup
 	close_log();
 }
