@@ -10,12 +10,11 @@ int main() {
 	printf("scmd_serv %s\n", VER);
 
 	// Startup
-	prepare_log();
-	write_log("Starting scmd server %s", VER);
-
 	if(!open_dir("/.scmd/", 7))
 		die(ENOENT, "Could not create config dir.");
-	
+
+	prepare_log();
+	write_log("Starting scmd server %s", VER);
 	prepare_modloader();
 
 	// Programmflow
@@ -23,9 +22,12 @@ int main() {
 
 	mod_t mod = {.name = "test.so"};
 
-	mod_query(&mod);
-	
-	mod.init();
+	if(0 == mod_query(&mod))
+	{
+		mod.init();
+	} else
+		write_log("Could not find module %s", mod.name);
+		
 	// Cleanup
 	close_log();
 }

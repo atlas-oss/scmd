@@ -6,25 +6,26 @@
 #include <string.h>
 #include <sys/stat.h>
 
-static char* home = NULL;
+static char *phome = NULL;
 static FILE *f = NULL;
 
-DIR *open_dir(const char* cat_path, const int len)
+DIR *open_dir(const char *cat_path, const int len)
 {
-	static DIR* d = NULL;
-	
-	char path[strlen(home)+1 + len];
-	strncpy(path,home,strlen(home)+1);
+	static DIR *d = NULL;
+	char *home = getenv("HOME");
 
-	if(!strncat(path, cat_path, len))
+	char path[strlen(home) + 1 + len];
+	strncpy(path, home, strlen(home) + 1);
+
+	if (!strncat(path, cat_path, len))
 		return NULL;
-	
+
 	d = opendir(path);
-	
-	if(!d) {
+
+	if (!d) {
 		write_log("Could not find directory %s.", path);
 
-		if (0 != mkdir(path, S_IRWXU | S_IRWXG))
+		if (0 != mkdir(path, S_IRWXU))
 			return NULL;
 
 		write_log("Created directory %s.", path);
@@ -36,36 +37,39 @@ DIR *open_dir(const char* cat_path, const int len)
 
 void prepare_log()
 {
-	home = getenv("HOME");
+	phome = getenv("HOME");
 
-	if(!home)
+	if (!phome)
 		die(EXIT_FAILURE, "Could not find $HOME variable.");
-	
-	char path[strlen(home) + 10];
-	strncpy(path, home, strlen(home)+1);
+
+	char path[strlen(phome) + 10];
+	strncpy(path, phome, strlen(phome) + 1);
 	strcat(path, "/.scmd/log");
-	
+
 	f = fopen(path, "w");
 
 	puts(path);
-	
-	if(!f)
+
+	if (!f)
 		die(ENOENT, "Could not open log file.");
 }
 
-void _write_log(const char* func, const char* file, const char* msg, ...) {
+void _write_log(const char *func, const char *file, const char *msg, ...)
+{
 	va_list va;
 	va_start(va, msg);
 
-	fprintf(f, "%s:[%s]: ", func, file);
-	vfprintf(f, msg, va);
-	fprintf(f, "\n");
+	if (f) {
+		fprintf(f, "%s:[%s]: ", func, file);
+		vfprintf(f, msg, va);
+		fprintf(f, "\n");
+	}
 
-	#ifdef VERBOSE
+#ifdef VERBOSE
 	printf("%s:[%s]: ", func, file);
 	vprintf(msg, va);
 	puts("");
-	#endif
+#endif
 
 	va_end(va);
 }
