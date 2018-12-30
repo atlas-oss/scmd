@@ -36,7 +36,7 @@ DIR *open_dir(const char *cat_path, const int len)
 }
 
 void prepare_log()
-{
+{ 
 	phome = getenv("HOME");
 
 	if (!phome)
@@ -47,8 +47,6 @@ void prepare_log()
 	strcat(path, "/.scmd/log");
 
 	f = fopen(path, "w");
-
-	puts(path);
 
 	if (!f)
 		die(ENOENT, "Could not open log file.");
@@ -79,12 +77,15 @@ void close_log()
 	fclose(f);
 }
 
-void die(int err, char *msg, ...)
+void _die(const char *func, const char *file, const int err, const char *msg, ...)
 {
 	va_list va;
 	va_start(va, msg);
-	vfprintf(stderr, msg, va);
+
+	printf("FATAL ERROR: %s:[%s]: ", func, file);
+	vprintf(msg, va);
 	puts("");
+	
 	va_end(va);
 	exit(err);
 }

@@ -21,12 +21,7 @@ int main()
 	// Programmflow
 	open_connection(PORT);
 
-	mod_t mod = {.name = "test.so"};
-
-	if (0 == mod_query(&mod)) {
-		mod.init();
-	} else
-		write_log("Could not find module %s", mod.name);
+	wait_for_cmd();
 
 	// Cleanup
 	close_log();

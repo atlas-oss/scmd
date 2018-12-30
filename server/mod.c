@@ -56,7 +56,7 @@ int mod_query(mod_t *mod)
 
 	dlerror();
 
-	*(void **)(&(mod->init)) = dlsym(handle, "init");
+	*(int **)(&(mod->init)) = dlsym(handle, "init");
 	if ((err = dlerror()) != NULL)
 		die(EXIT_FAILURE, err);
 
@@ -64,11 +64,27 @@ int mod_query(mod_t *mod)
 		  mod->init);
 	dlerror();
 
-	*(void **)(&(mod->cmd)) = dlsym(handle, "cmd");
+	*(int **)(&(mod->cmd)) = dlsym(handle, "cmd");
 	if ((err = dlerror()) != NULL)
 		die(EXIT_FAILURE, err);
 
 	write_log("Found symbol cmd in module %s on %p.", mod->name, mod->cmd);
 	dlclose(handle);
 	return 0;
+}
+
+int process_cmd(cmd_proto_t *cmd)
+{
+	mod_t mod = {.name = cmd->module};
+	
+	if(0 != mod_query(&mod))
+		return UNKOWN_MODULE;
+
+	if(0 != mod.init())
+		return MODULE_CRASH;
+
+	if(0 != mod.cmd(cmd->cmd))
+		return UNKOWN_CMD;
+	
+	return SUCCESS;
 }

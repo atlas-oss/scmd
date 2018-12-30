@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include "network.h"
 
@@ -29,7 +30,7 @@ int main(int argc, char **argv)
 
 	addr = argv[1];
 	port = atoi(argv[2]);
-	cmd = argv[3];
+	cmd = argv[3]; // Format: module?cmd
 
 	if (addr[0] == '\0' || cmd[0] == '\0' || port == 0) {
 		puts(HELP);
@@ -38,6 +39,7 @@ int main(int argc, char **argv)
 
 	// Starting program flow
 
+	int res;
 	int sock = open_connection(port, addr);
 
 	if (!sock)
@@ -47,8 +49,40 @@ int main(int argc, char **argv)
 
 	cmd_proto_t request = {.exit = SUCCESS};
 
-	if (!send_cmd(sock, &request))
+        request.module = strtok(argv[3], "?");
+	request.cmd = strtok(NULL, "?");
+
+	if ((res = send_cmd(sock, &request)) == -1)
 		die(EXIT_FAILURE, "Could not send command\n");
+
+	switch (res) {
+	case SUCCESS:
+		puts("Programm exited with result: SUCCESS");
+		break;
+
+	case UNKOWN_FAILURE:
+		puts("Programm exited with result: UNKOWN_FAILURE. Something is wrong.");
+		break;
+		
+	case TIMEOUT:
+		puts("The connection timed out: TIMEOUT");
+		break;
+
+	case UNKOWN_CMD:
+		puts("The module doesn't know the requested command: UNKOWN_CMD");
+		break;
+		
+	case UNKOWN_MODULE:
+		puts("The server cannot find the requested module: UNKOWN_MODULE");
+		break;
+
+	case MODULE_CRASH:
+		puts("The requested module crashed: MODULE_CRASH");
+		break;
+
+	default:
+		puts("Unkown server reply. Your client is maybe outdated.");
+	}
 
 	return 0;
 }
