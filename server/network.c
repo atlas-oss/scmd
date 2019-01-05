@@ -36,8 +36,7 @@ int wait_for_cmd()
 		cmd_proto_t cmd;
 		int buflen = 65507; // Maximal UDP size
 		char request[buflen], exitbuf[2];
-		unsigned char iv[12], aad[16], tag[16],
-			*key = getAESKey();
+		unsigned char iv[12], aad[16], tag[16], *key = getAESKey();
 
 		memset(&cmd, 0, sizeof(cmd));
 
@@ -55,27 +54,28 @@ int wait_for_cmd()
 
 		{
 			int i = buflen;
-			for(int j = 0; j < 12; ++j, ++i)
+			for (int j = 0; j < 12; ++j, ++i)
 				iv[j] = request[i];
-			for(int j = 0; j < 16; ++j, ++i)
+			for (int j = 0; j < 16; ++j, ++i)
 				aad[j] = request[i];
-			for(int j = 0; j < 16; ++j, ++i)
-				tag[j] = request[i];			
+			for (int j = 0; j < 16; ++j, ++i)
+				tag[j] = request[i];
 		}
 
-		strlcpy((char*)decrypt, request, buflen + 1);
+		strlcpy((char *)decrypt, request, buflen + 1);
 
 		aes_decrypt(decrypt, buflen, aad, sizeof(aad), tag, key, iv,
-			      sizeof(iv), (unsigned char *)result);
+			    sizeof(iv), (unsigned char *)result);
 
 		cmd.module = strtok(result, "/");
 		cmd.cmd = strtok(NULL, "/");
 		cmd.answer = "None";
 		cmd.exit = atoi(strtok(NULL, "/"));
-		
+
 		cmd.exit = process_cmd(&cmd);
 
-		buflen = strlen(cmd.module) + strlen(cmd.cmd) + strlen(cmd.answer) + 5;
+		buflen = strlen(cmd.module) + strlen(cmd.cmd) +
+			 strlen(cmd.answer) + 5;
 		char replybuf[buflen], replycrypt[buflen + 44];
 
 		// Module

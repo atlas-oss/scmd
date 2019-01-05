@@ -36,7 +36,7 @@ DIR *open_dir(const char *cat_path, const int len)
 }
 
 void prepare_log()
-{ 
+{
 	phome = getenv("HOME");
 
 	if (!phome)
@@ -77,7 +77,8 @@ void close_log()
 	fclose(f);
 }
 
-void _die(const char *func, const char *file, const int err, const char *msg, ...)
+void _die(const char *func, const char *file, const int err, const char *msg,
+	  ...)
 {
 	va_list va;
 	va_start(va, msg);
@@ -85,7 +86,7 @@ void _die(const char *func, const char *file, const int err, const char *msg, ..
 	printf("FATAL ERROR: %s:[%s]: ", func, file);
 	vprintf(msg, va);
 	puts("");
-	
+
 	va_end(va);
 	exit(err);
 }

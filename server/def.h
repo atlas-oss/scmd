@@ -10,8 +10,7 @@
 #define write_log(msg, ...)                                                    \
 	_write_log(__FUNCTION__, __FILE__, msg, ##__VA_ARGS__)
 
-#define die(err, msg, ...)                                                     \
-	_die(__FUNCTION__, __FILE__, err, msg, ##__VA_ARGS__)
+#define die(err, msg, ...) _die(__FUNCTION__, __FILE__, err, msg, ##__VA_ARGS__)
 
 enum SERVER_EXIT {
 	SUCCESS = 0x00,
@@ -33,7 +32,9 @@ typedef struct {
 typedef struct {
 	char *name;
 	int (*init)(); // init the module, called "init"
-	int (*cmd)(char *cmd, char *answer);  // handles commands from the client, called "cmd"
+	int (*cmd)(
+		char *cmd,
+		char *answer); // handles commands from the client, called "cmd"
 } mod_t;
 
 

@@ -5,8 +5,8 @@
 #include <string.h>
 
 int aes_encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *aad,
-	    int aad_len, unsigned char *key, unsigned char *iv, int iv_len,
-	    unsigned char *ciphertext, unsigned char *tag)
+		int aad_len, unsigned char *key, unsigned char *iv, int iv_len,
+		unsigned char *ciphertext, unsigned char *tag)
 {
 	EVP_CIPHER_CTX *ctx;
 
@@ -62,9 +62,10 @@ int aes_encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *aad,
 	return ciphertext_len;
 }
 
-int aes_decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *aad,
-	    int aad_len, unsigned char *tag, unsigned char *key,
-	    unsigned char *iv, int iv_len, unsigned char *plaintext)
+int aes_decrypt(unsigned char *ciphertext, int ciphertext_len,
+		unsigned char *aad, int aad_len, unsigned char *tag,
+		unsigned char *key, unsigned char *iv, int iv_len,
+		unsigned char *plaintext)
 {
 	EVP_CIPHER_CTX *ctx;
 	int len;
@@ -122,20 +123,21 @@ int aes_decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *aa
 	}
 }
 
-unsigned char *getAESKey() {
+unsigned char *getAESKey()
+{
 	char *home = getenv("HOME");
 	int pathlen = strlen(home) + 9;
 	char path[pathlen]; // /home/<name>/.scmdkey
-	
-	static unsigned char result[1024]; 
+
+	static unsigned char result[1024];
 	FILE *f;
-	
+
 	strlcpy(path, home, pathlen);
 	strcat(path, "/.scmdkey");
 
 	f = fopen(path, "r");
 
-	fgets((char*)result, sizeof(result), f);
+	fgets((char *)result, sizeof(result), f);
 
 	return result;
 }

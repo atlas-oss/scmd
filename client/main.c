@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 
 	cmd_proto_t request = {.exit = SUCCESS};
 
-        request.module = strtok(argv[3], "?");
+	request.module = strtok(argv[3], "?");
 	request.cmd = strtok(NULL, "?");
 
 	if ((res = send_cmd(sock, &request)) == -1)
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	case UNKOWN_FAILURE:
 		puts("Programm exited with result: UNKOWN_FAILURE. Something is wrong.");
 		break;
-		
+
 	case TIMEOUT:
 		puts("The connection timed out: TIMEOUT");
 		break;
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	case UNKOWN_CMD:
 		puts("The module doesn't know the requested command: UNKOWN_CMD");
 		break;
-		
+
 	case UNKOWN_MODULE:
 		puts("The server cannot find the requested module: UNKOWN_MODULE");
 		break;

@@ -76,15 +76,15 @@ int mod_query(mod_t *mod)
 int process_cmd(cmd_proto_t *cmd)
 {
 	mod_t mod = {.name = cmd->module};
-	
-	if(0 != mod_query(&mod))
+
+	if (0 != mod_query(&mod))
 		return UNKOWN_MODULE;
 
-	if(0 != mod.init())
+	if (0 != mod.init())
 		return MODULE_CRASH;
 
-	if(0 != mod.cmd(cmd->cmd, cmd->answer))
+	if (0 != mod.cmd(cmd->cmd, cmd->answer))
 		return UNKOWN_CMD;
-	
+
 	return SUCCESS;
 }
