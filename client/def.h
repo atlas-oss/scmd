@@ -14,6 +14,7 @@ typedef enum SERVER_EXIT server_exit_t;
 typedef struct {
 	char *module;
 	char *cmd;
+	char *answer;
 	server_exit_t exit;
 } cmd_proto_t;
 

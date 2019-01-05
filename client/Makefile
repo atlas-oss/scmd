@@ -4,10 +4,10 @@ WARN= -Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -Wformat-
 SEC= -march=native -fstack-protector-all --param ssp-buffer-size=4 -fpie -ftrapv -D_FORTIFY_SOURCE=2
 
 CFLAGS= ${SEC} ${WARN} -std=c99 -pedantic -O2
-LDFLAGS= -Wl,-z,relro,-z,now -pie
+LDFLAGS= -Wl,-z,relro,-z,now -pie -lcrypto
 
-SRC = main.c network.c
-OBJECT = main.c network.c
+SRC = main.c network.c crypt.c
+OBJECT = main.o network.o crypt.o
 
 all: _swm_
 	@echo CC -o scmd

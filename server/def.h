@@ -26,13 +26,14 @@ typedef enum SERVER_EXIT server_exit_t;
 typedef struct {
 	char *module;
 	char *cmd;
+	char *answer;
 	server_exit_t exit;
 } cmd_proto_t;
 
 typedef struct {
 	char *name;
 	int (*init)(); // init the module, called "init"
-	int (*cmd)(char *cmd);  // handles commands from the client, called "cmd"
+	int (*cmd)(char *cmd, char *answer);  // handles commands from the client, called "cmd"
 } mod_t;
 
 

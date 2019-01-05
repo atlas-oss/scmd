@@ -83,7 +83,7 @@ int process_cmd(cmd_proto_t *cmd)
 	if(0 != mod.init())
 		return MODULE_CRASH;
 
-	if(0 != mod.cmd(cmd->cmd))
+	if(0 != mod.cmd(cmd->cmd, cmd->answer))
 		return UNKOWN_CMD;
 	
 	return SUCCESS;

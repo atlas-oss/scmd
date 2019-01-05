@@ -5,10 +5,10 @@ WARN= -Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -Wformat-
 SEC= -march=native -fstack-protector-all --param ssp-buffer-size=4 -fpie -ftrapv -D_FORTIFY_SOURCE=2
 
 CFLAGS= ${SEC} ${WARN} -std=c99 -O2 -DVERBOSE
-LDFLAGS= -Wl,-z,relro,-z,now -pie -ldl
+LDFLAGS= -Wl,-z,relro,-z,now -pie -ldl -lcrypto
 
-SRC = main.c mod.c def.c network.c
-OBJECT = main.o mod.o def.o network.o
+SRC = main.c mod.c def.c network.c crypt.c
+OBJECT = main.o mod.o def.o network.o crypt.o
 
 all: _scmd_
 	@echo CC -o scmd_serv
